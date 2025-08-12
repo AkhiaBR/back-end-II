@@ -19,12 +19,28 @@ document.getElementById('search-form').addEventListener('submit', function(event
     pokemonImage.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0ghdBwJHz-6PnTiwFzlI-rnpUfr-6rWdr0g&s";
 
     // conexao com o PHP
-    fetch(`search.php?pokemon_name=${pokemonName}`)
-        .then(response => response.json) // coloca a resposta do fetch em um arquivo 'response.json'
+    fetch(`buscar.php?pokemon_name=${pokemonName}`)
+        .then(response => response.json()) // coloca a resposta do fetch em um arquivo 'response.json'
 
         .then(data => {
             // se a requisicao der certo:
-            console.log(data.success);
+            console.log(data);
+            
+            if(data.success) {
+                // Pokemon encontrado
+                pokemonNameElement.textContent = data.name;
+                pokemonIdElement.textContent = data.id;
+                pokemonTypeElement.textContent = data.type;
+                pokemonDescriptionElement.textContent = data.description;
+                pokemonImage.src = data.image;
+            } else {
+                // Pokemon não encontrado
+                pokemonNameElement.textContent = data.name;
+                pokemonIdElement.textContent = "";
+                pokemonTypeElement.textContent = "";
+                pokemonDescriptionElement.textContent = data.description;
+                pokemonImage.src = data.image;
+            }
         })
         .catch(error => { // se algo der errado, ele vai "pegar" esse erro e:
             console.log(error); // colocar o erro no log do console
