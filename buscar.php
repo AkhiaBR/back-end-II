@@ -32,8 +32,28 @@ if (!empty($_GET["pokemon_name"])) {
         
         $pokemonName = ucfirst($pokemonData['name']);
         $pokemonId = $pokemonData['id'];
-        $pokemonType = ucfirst($pokemonType['types'][0]['type']['name']);
-        $pokemonImage = $pokemonImage['sprites']['other']['official-artwork']['front-default'];
+        $pokemonType = ucfirst($pokemonData['types'][0]['type']['name']);
+        $pokemonImage = $pokemonData['sprites']['other']['official-artwork']['front_default'];
+
+        $descUrl = $pokemonData['species']['url'];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $descUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $descResponse = curl_exec($ch);
+        curl_close($ch);
+
+        $descData = json_decode($descResponse, true);
+
+        $description = "";        
+        foreach($descData['flavor_text_entries'] as $entry) { // para cada flavor_text_entry, será salvo em $entry
+            if($entry['language']['name'] == 'en') {
+                $description = $entry['flavor_text'];
+                break;
+            } 
+        }
     }
 
     $response = array(
@@ -41,7 +61,7 @@ if (!empty($_GET["pokemon_name"])) {
         "name" => $pokemonName,
         "id" => $pokemonId,
         "type" => $pokemonType,
-        "description" => "Tentem outro nome",
+        "description" => $description,
         "image" => $pokemonImage
     );
 }

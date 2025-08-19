@@ -22,27 +22,16 @@ document.getElementById('search-form').addEventListener('submit', function(event
     fetch(`buscar.php?pokemon_name=${pokemonName}`)
         .then(response => response.json()) // coloca a resposta do fetch em um arquivo 'response.json'
 
+        // 
         .then(data => {
-            // se a requisicao der certo:
-            console.log(data);
-            
-            if(data.success) {
-                // Pokemon encontrado
-                pokemonNameElement.textContent = data.name;
-                pokemonIdElement.textContent = data.id;
-                pokemonTypeElement.textContent = data.type;
-                pokemonDescriptionElement.textContent = data.description;
-                pokemonImage.src = data.image;
-            } else {
-                // Pokemon não encontrado
-                pokemonNameElement.textContent = data.name;
-                pokemonIdElement.textContent = "";
-                pokemonTypeElement.textContent = "";
-                pokemonDescriptionElement.textContent = data.description;
-                pokemonImage.src = data.image;
-            }
+            pokemonImage.src = data.image;
+            pokemonNameElement.textContent = data.name;
+            pokemonIdElement.textContent = data.id;    
+            pokemonTypeElement.textContent = data.type;
+            pokemonDescriptionElement.textContent = data.description;
         })
         .catch(error => { // se algo der errado, ele vai "pegar" esse erro e:
             console.log(error); // colocar o erro no log do console
         }) 
 })
+    
