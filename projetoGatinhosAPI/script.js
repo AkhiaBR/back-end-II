@@ -14,7 +14,7 @@ document.getElementById("get-cat-btn").addEventListener("click", function(event)
     fetch(`buscar.php`)
         .then(response => response.json())
         .then(data => {
-            catName.textContent = "Gatinho encontrado!";
+            catName.textContent = "GATINHO ENCONTRADO!";
             catImage.src = data.image;
         })
         .catch(error => {
